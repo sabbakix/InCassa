@@ -1,4 +1,3 @@
-import MyComponent from "./MyComponent";
 import { useState } from "react";
 import "./styles.css";
 
