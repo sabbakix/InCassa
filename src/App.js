@@ -71,11 +71,11 @@ export default function App() {
             rel="noreferrer"
             target="_blank"
           >
-            <Row>
+            <Row className="bookmark-row">
               <Col xs={3}>
                 <Image thumbnail src={bookmark.image} alt="{bookmark.title}" />
               </Col>
-              <Col xs={9}>
+              <Col xs={9} className="bookmark-title">
                 <span>{bookmark.title}</span>
               </Col>
             </Row>
