@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -14,6 +14,7 @@ const apiId = "99767da3-e9b1-4d0f-90cd-98ceebe0cd7b";
 export default function App() {
   const [bookmarks, setBookmarks] = useState([]);
   const [url, setUrl] = useState("");
+
   function handleSubmit(e) {
     e.preventDefault();
     const encodedUrl = encodeURIComponent(url);
@@ -28,9 +29,17 @@ export default function App() {
           image: data.hybridGraph.image,
           url: data.hybridGraph.url
         };
-        setBookmarks([...bookmarks, newBookmark]);
+        const newBookmarks = [...bookmarks, newBookmark];
+        setBookmarks(newBookmarks);
+        localStorage.setItem("bookmarks", JSON.stringify(newBookmarks));
       });
   }
+
+  useEffect(() => {
+    const lsBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+    setBookmarks(lsBookmarks);
+  }, []);
+
   //jsx
   return (
     <>
