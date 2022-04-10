@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -12,8 +12,28 @@ const apiUrl = "https://opengraph.io/api/1.1/site";
 const apiId = "99767da3-e9b1-4d0f-90cd-98ceebe0cd7b";
 
 export default function App() {
-  const [bookmarks, setBookmarks] = useState([]);
+  let [bookmarks, setBookmarks] = useState([]);
   const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    const lsBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+    setBookmarks(lsBookmarks);
+    bookmarks = lsBookmarks;
+    console.log("get", lsBookmarks);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+    console.log("set", bookmarks);
+  }, [bookmarks]);
+
+  function removeBookmark(e, url) {
+    e.preventDefault();
+    const filtered = bookmarks.filter((bookmark) => {
+      return bookmark.url !== url;
+    });
+    setBookmarks(filtered);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -31,14 +51,8 @@ export default function App() {
         };
         const newBookmarks = [...bookmarks, newBookmark];
         setBookmarks(newBookmarks);
-        localStorage.setItem("bookmarks", JSON.stringify(newBookmarks));
       });
   }
-
-  useEffect(() => {
-    const lsBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
-    setBookmarks(lsBookmarks);
-  }, []);
 
   //jsx
   return (
@@ -84,8 +98,13 @@ export default function App() {
               <Col xs={3}>
                 <Image thumbnail src={bookmark.image} alt="{bookmark.title}" />
               </Col>
-              <Col xs={9} className="bookmark-title">
+              <Col xs={8} className="bookmark-title">
                 <span>{bookmark.title}</span>
+              </Col>
+              <Col xs={1}>
+                <Button onClick={(e) => removeBookmark(e, bookmark.url)}>
+                  X
+                </Button>
               </Col>
             </Row>
           </a>

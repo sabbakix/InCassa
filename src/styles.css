@@ -8,6 +8,13 @@ body {
   position: relative;
 }
 
+form {
+  margin: 20px 0;
+  padding: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
 .bookmark-row {
   border: 1px solid #ccc;
   border-radius: 5px;
